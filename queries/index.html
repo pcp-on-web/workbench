@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>YASGUI</title>
+    <link href='yasgui.min.css' rel='stylesheet' type='text/css'/>
+    <link href='index.css' rel='stylesheet' type='text/css'/>
+    <style>
+     /** uncomment this if you'd like to hide the endpoint selector */
+        /** .yasgui .endpointText {display:none !important;} */  /** endpoint-selector */
+    </style>
+  </head>
+  <body>
+    <div class="yasgui" id="header">
+	<div>
+	    <div id="headline">
+	    <h1>Professorale Karrieremuster der Frühen Neuzeit</h1>
+	    <p>Weitere Informationen zum Projekt finden Sie auf der Webseite des Projektes (<a href="https://pcp-on-web.de" target="_blank">https://pcp-on-web.de</a>)
+	    </div>
+	    <div class="yasr">
+	    	<button type="button" onclick="toggle('querylist');" class="yasr_btn">Liste von Anfragen an die Forschungsdatenbank</button>
+		<div id="querylist" style="display:none"></div>
+	    </div>
+	 </div>
+    	<div><img src="pcp-logo.gif" alt="Professorale Karrieremuster der Frühen Neuzeit" label="Professorale Karrieremuster der Frühen Neuzeit"/>
+    	</div>
+
+    </div>
+  
+    <div id='yasgui'></div>
+    <script src='yasgui.min.js'></script>
+    <script src='index.js'></script>
+  </body>
+</html>
+

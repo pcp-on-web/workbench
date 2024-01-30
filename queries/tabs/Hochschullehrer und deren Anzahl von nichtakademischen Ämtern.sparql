@@ -1,0 +1,49 @@
+# Hochschullehrer und deren Anzahl von nichtakademischen Ämtern
+# ...
+#-----
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX pcp: <http://pcp-on-web.de/ontology#>
+PREFIX data: <http://data.pcp-on-web.de/v.1/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT DISTINCT ?lecturer (count(?office) as ?office_count)
+WHERE {
+	?lecturer a pcp:Lecturer.
+    OPTIONAL {
+	        ?lecturer rdfs:label ?label.
+	        BIND( str(?label) as ?label_lecturer)
+  	}
+    OPTIONAL {?lecturer pcp:surname ?surname .}
+    OPTIONAL {
+          ?lecturer pcp:hasStageOfLife ?birth.
+          ?birth rdf:type pcp:Birth .
+          OPTIONAL {
+      		?birth pcp:date ?birth_date .
+		    BIND (xsd:integer(substr(str(?birth_date), 1, 4)) as ?birth_year)
+
+    	  }
+  }
+      OPTIONAL {
+          ?lecturer pcp:hasStageOfLife ?office.
+          ?office rdf:type pcp:Office .
+   		 OPTIONAL { ?office rdfs:label ?office_label. }
+
+          OPTIONAL {
+      		?office pcp:from ?office_from .
+		    BIND (xsd:integer(substr(str(?office_from), 1, 4)) as ?office_year)
+    		}
+  }
+
+
+		
+
+}
+GROUP BY ?lecturer
+ORDER BY DESC(?office_count)
+
+
+
+
+

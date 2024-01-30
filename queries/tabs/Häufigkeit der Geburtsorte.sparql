@@ -1,0 +1,19 @@
+# Häufigekit der Geburtsorte der Professoren
+# Dieser Query ermittelt alle Geburtsorte und zählt deren Häufigkeit bei der Geburt.
+#-----
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX pcp: <http://pcp-on-web.de/ontology#>
+PREFIX data: <http://data.pcp-on-web.de/v.1/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?location (count(?location) as ?count)
+WHERE {
+	?stageofLife rdf:type pcp:Birth .
+	?stageofLife pcp:stageOfLifeLocation ?location .
+	?location a pcp:Location.
+}
+GROUP BY ?location
+ORDER BY DESC(?count)
+

@@ -1,0 +1,53 @@
+# Hochschullehrer Geburtsort, Lehrstühle und Fakultäten
+# Die Liste enthält die oProfs mit Geburtsorten, Lehrstühlen, Lehrstuhlortn, den jeweiligen Fakultäten, sortiert nach Nachnamen und Jahreszahlen der Lehrstühle und Fakultäten
+#-----
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX pcp: <http://pcp-on-web.de/ontology#>
+PREFIX data: <http://data.pcp-on-web.de/v.1/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT DISTINCT ?lecturer ?label_lecturer ?birth_year ?birth_place_label ?chair_label ?chair_year ?chair_place_label ?chair_label ?faculty_label ?faculty_type
+WHERE {
+    ?lecturer a pcp:Lecturer.
+        OPTIONAL {
+            ?lecturer rdfs:label ?label.
+        BIND( str(?label) as ?label_lecturer)
+          }
+        OPTIONAL {?lecturer pcp:surname ?surname .}
+        OPTIONAL {?lecturer pcp:firstname ?firstname .}
+        OPTIONAL {
+          ?lecturer pcp:hasStageOfLife ?birth.
+          ?birth rdf:type pcp:Birth .
+          OPTIONAL {
+              ?birth pcp:date ?birth_date .
+            BIND (xsd:integer(substr(str(?birth_date), 1, 4)) as ?birth_year)
+
+          }
+    
+          OPTIONAL {?birth pcp:stageOfLifeLocation ?birth_place .
+              OPTIONAL {?birth_place rdfs:label ?birth_place_label . }
+          }
+        }
+        OPTIONAL {
+          ?lecturer pcp:hasStageOfLife ?chair.
+          ?chair rdf:type pcp:ChairProfessorship .
+          OPTIONAL {?chair rdfs:label ?chair_label . }
+          OPTIONAL {
+              ?chair pcp:from ?chair_from .
+              BIND (xsd:integer(substr(str(?chair_from), 1, 4)) as ?chair_year)
+            }
+          OPTIONAL {?chair pcp:stageOfLifeLocation ?chair_place .
+              OPTIONAL {?chair_place rdfs:label ?chair_place_label . }
+          }
+          OPTIONAL {
+            ?chair pcp:hasFaculty ?faculty.
+      		?faculty rdf:type ?faculty_type.
+            ?faculty rdfs:label ?faculty_label. 
+          }
+        }
+       
+
+}
+ORDER BY ?surname ?chair_year ?faculty_year

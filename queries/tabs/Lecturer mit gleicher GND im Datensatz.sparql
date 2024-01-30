@@ -1,0 +1,19 @@
+# Professoren mit gleicher GND im Datensatz
+# Finde Professoren, die Doppelt im Datensatz sind
+#-----
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX pcp: <http://pcp-on-web.de/ontology#>
+PREFIX data: <http://data.pcp-on-web.de/v.1/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX cpm: <http://catalogus-professorum.org/cpm/2/>
+PREFIX cpl: <http://catalogus-professorum.org/lipsiensium/>
+
+SELECT DISTINCT ?lecturer1 ?gnd
+WHERE {
+	?lecturer1 a pcp:Lecturer; pcp:gnd ?gnd .
+        ?lecturer2 a pcp:Lecturer; pcp:gnd ?gnd .
+        filter (?lecturer1 != ?lecturer2)
+}
+

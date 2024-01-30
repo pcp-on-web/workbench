@@ -1,0 +1,40 @@
+# Liste aller Hochschullehrer (Lecturer)
+# Diese Anfrage erstellt eine Liste aller Hochschullehrer mit Geburts- und Sterbedaten
+#-----
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX pcp: <http://pcp-on-web.de/ontology#>
+PREFIX data: <http://data.pcp-on-web.de/v.1/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT DISTINCT ?lecturer ?label_lecturer ?surname ?firstname ?birth_date ?birth_place_label ?death_date ?death_place_label 
+WHERE {
+	?lecturer a pcp:Lecturer.
+        OPTIONAL {
+	        ?lecturer rdfs:label ?label.
+        BIND( str(?label) as ?label_lecturer)
+      	}
+        OPTIONAL {?lecturer pcp:surname ?surname .}
+        OPTIONAL {?lecturer pcp:firstname ?firstname .}
+        OPTIONAL {
+          ?lecturer pcp:hasStageOfLife ?birth.
+          ?birth rdf:type pcp:Birth .
+          OPTIONAL {?birth pcp:date ?birth_date .}
+          OPTIONAL {?birth pcp:stageOfLifeLocation ?birth_place .
+              OPTIONAL {?birth_place rdfs:label ?birth_place_label . }
+          }
+        }
+        OPTIONAL {
+          ?lecturer pcp:hasStageOfLife ?death.
+          ?death rdf:type pcp:Death .
+          OPTIONAL {?death pcp:date ?death_date .}
+          OPTIONAL {?death pcp:stageOfLifeLocation ?death_place .
+              OPTIONAL {?death_place rdfs:label ?death_place_label . }
+          }
+        }
+}
+ORDER BY ?surname
+
+
+
